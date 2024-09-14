@@ -22,15 +22,27 @@ cd GalileoNews_API
 
 ### Instalar dependencias
 
-Una vez clonado el repositorio, instala las dependencias del proyecto ejecutando:
+Instala las dependencias del proyecto ejecutando:
 
 ```bash
 npm install
 ```
 
+### Inicializar Sequelize
+
+Si no lo has hecho antes, inicializa Sequelize para generar las carpetas necesarias:
+
+```bash
+npx sequelize-cli init
+```
+
+### Configurar Sequelize
+
+Antes de continuar, asegúrate de configurar la conexión a tu base de datos MySQL en el archivo `config/config.json`. Este archivo ya está generado por **Sequelize** y puedes editarlo para asegurarte de que las credenciales de tu base de datos sean correctas.
+
 ### Configurar variables de entorno
 
-Copia el archivo `.env.example` a un nuevo archivo llamado `.env` y completa las variables de entorno con los valores correspondientes a tu entorno de desarrollo:
+Copia el archivo `.env.example` a `.env` y completa las variables de entorno según tu configuración local:
 
 ```bash
 cp .env.example .env
@@ -38,21 +50,15 @@ cp .env.example .env
 
 ### Ejecutar migraciones
 
-Para configurar tu base de datos con las tablas correctas, necesitas ejecutar las **migraciones** con **Sequelize**. Las migraciones crean las tablas en la base de datos según el esquema que está definido en el código.
-
-Primero, asegúrate de que MySQL esté corriendo y que la base de datos definida en tu archivo `.env` exista (si no, crea una nueva base de datos).
-
-Luego ejecuta:
+Asegúrate de que MySQL esté corriendo y que tu base de datos esté creada. Luego, ejecuta las migraciones para crear las tablas en la base de datos:
 
 ```bash
 npx sequelize-cli db:migrate
 ```
 
-Este comando creará todas las tablas necesarias en la base de datos.
-
 ### Ejecutar el servidor
 
-Para iniciar el servidor en modo de desarrollo, puedes usar:
+Para iniciar el servidor en modo de desarrollo, ejecuta:
 
 ```bash
 npm run dev
@@ -60,13 +66,13 @@ npm run dev
 
 ### Revertir migraciones (opcional)
 
-Si necesitas deshacer la última migración aplicada, puedes ejecutar:
+Si necesitas deshacer la última migración aplicada, ejecuta:
 
 ```bash
 npx sequelize-cli db:migrate:undo
 ```
 
-Para deshacer todas las migraciones, ejecuta:
+Para deshacer todas las migraciones:
 
 ```bash
 npx sequelize-cli db:migrate:undo:all
