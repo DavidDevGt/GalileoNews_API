@@ -28,6 +28,14 @@ Instala las dependencias del proyecto ejecutando:
 npm install
 ```
 
+### Crear la base de datos
+
+Antes de ejecutar las migraciones, debes crear la base de datos en MySQL. Abre tu cliente MySQL (como **MySQL Workbench** o **phpMyAdmin**) o desde la terminal, y ejecuta el siguiente comando para crear la base de datos:
+
+```sql
+CREATE DATABASE IF NOT EXISTS GalileoNewsDB;
+```
+
 ### Inicializar Sequelize
 
 Si no lo has hecho antes, inicializa Sequelize para generar las carpetas necesarias:
@@ -38,7 +46,7 @@ npx sequelize-cli init
 
 ### Configurar Sequelize
 
-Antes de continuar, asegúrate de configurar la conexión a tu base de datos MySQL en el archivo `config/config.json`. Este archivo ya está generado por **Sequelize** y puedes editarlo para asegurarte de que las credenciales de tu base de datos sean correctas.
+Asegúrate de configurar la conexión a tu base de datos MySQL en el archivo `config/config.json`. Este archivo ya está generado por **Sequelize** y puedes editarlo para que las credenciales de tu base de datos sean correctas (usuario, contraseña, nombre de la base de datos, host, etc.).
 
 ### Configurar variables de entorno
 
@@ -50,7 +58,7 @@ cp .env.example .env
 
 ### Ejecutar migraciones
 
-Asegúrate de que MySQL esté corriendo y que tu base de datos esté creada. Luego, ejecuta las migraciones para crear las tablas en la base de datos:
+Una vez que hayas creado la base de datos y configurado Sequelize, ejecuta las migraciones para crear las tablas necesarias en la base de datos:
 
 ```bash
 npx sequelize-cli db:migrate
