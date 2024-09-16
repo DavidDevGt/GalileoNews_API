@@ -9,6 +9,9 @@ const rolRoutes = require('./src/routes/rolRoutes');
 const userRoutes = require('./src/routes/usuarioRoutes');
 const categoriaRoutes = require('./src/routes/categoriaRoutes');
 const ingenieroRoutes = require('./src/routes/ingenieroRoutes');
+const linkContactoRoutes = require('./src/routes/linkContactoRoutes');
+const noticiaEventoRoutes = require('./src/routes/noticiaEventoRoutes');
+const pensumRoutes = require('./src/routes/pensumRoutes');
 
 dotenv.config();
 
@@ -28,6 +31,9 @@ app.use('/api/roles', rolRoutes);
 app.use('/api/usuarios', userRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/ingenieros', ingenieroRoutes);
+app.use('/api/link-contactos', linkContactoRoutes);
+app.use('/api/noticias-eventos', noticiaEventoRoutes);
+app.use('/api/pensums', pensumRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
