@@ -3,7 +3,7 @@
 
 ## 1. Introducción
 
-Este documento describe la arquitectura del backend del proyecto. El sistema está desarrollado en **Node.js** y sigue una arquitectura **MVC (Modelo-Vista-Controlador)** para la organización de sus componentes principales.
+Este documento describe la arquitectura del backend del proyecto. El sistema está desarrollado en **Node.js**, **Express** y sigue una arquitectura **MVC (Modelo-Vista-Controlador)**.
 
 ## 2. Estructura de Directorios
 
@@ -91,9 +91,9 @@ Funciones reutilizables que pueden ser utilizadas en múltiples partes de la apl
 La base de datos es gestionada utilizando **Sequelize** como ORM. Las migraciones se encuentran en la carpeta `migrations/` y permiten la creación y actualización de las tablas.
 
 **Tablas principales:**
-- `Usuario`: Almacena la información de los usuarios.
-- `Rol`: Almacena los roles de usuario (admin, usuario normal, etc.).
-- `Categoria`, `NoticiaEvento`, `Ingeniero`, `Pensum`: Otras entidades relacionadas con el dominio del proyecto.
+- `Usuario`: Usuarios de la App.
+- `Rol`: Guardar varios roles.
+- `Categoria`, `NoticiaEvento`, `Ingeniero`, `Pensum`: Otros modelos del proyecto.
 
 **Migraciones:**
 Cada archivo en `migrations/` representa una migración que crea o modifica tablas en la base de datos.
