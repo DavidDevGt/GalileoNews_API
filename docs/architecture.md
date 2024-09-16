@@ -34,7 +34,6 @@ El archivo `index.js` es el punto de entrada principal de la aplicación. Inicia
 **Responsabilidades:**
 - Configurar el servidor Express.
 - Conectar la base de datos.
-- Configurar middlewares globales (como `body-parser`, `cors`, etc.).
 - Manejar errores globales y el arranque del servidor.
 
 ### 3.2. **Configuración (`config/`)**
@@ -109,22 +108,9 @@ Cada archivo en `migrations/` representa una migración que crea o modifica tabl
 4. **Modelo**: El modelo interactúa con la base de datos si es necesario.
 5. **Respuesta**: El controlador devuelve una respuesta al cliente con el resultado de la operación.
 
-### 5.2. Diagrama de Flujo
-
-(Tu puedes agregar un diagrama aquí que muestre el flujo de trabajo general.)
-
 ## 6. Seguridad
 
 La aplicación incluye medidas de seguridad básicas, como la validación de entradas y autenticación con **JWT** para proteger los endpoints privados.
 
 **Características:**
 - Autenticación por **JSON Web Token (JWT)**.
-- Manejo de CORS para permitir peticiones solo desde orígenes seguros.
-
-## 7. Futuras Mejoras
-
-Algunas mejoras planeadas para futuras versiones incluyen:
-- Implementación de caching para mejorar el rendimiento.
-- Autenticación de dos factores (2FA).
-- Soporte para múltiples bases de datos (por ejemplo, MySQL y MongoDB).
-
