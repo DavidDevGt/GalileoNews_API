@@ -2,7 +2,7 @@
 
 Este proyecto es una API REST desarrollada para el manejo de noticias y eventos de la Universidad Galileo. Está construida con **Node.js** y utiliza **MySQL**.
 
-## Configuración inicial
+## Getting Started 🚀
 
 ### Prerrequisitos
 
