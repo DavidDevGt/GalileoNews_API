@@ -6,6 +6,7 @@ const LinkContacto = require('./LinkContacto');
 const Pensum = require('./Pensum');
 const Ingeniero = require('./Ingeniero');
 
+// Definir las relaciones
 Usuario.belongsTo(Rol, { foreignKey: 'rol_id' });
 Rol.hasMany(Usuario, { foreignKey: 'rol_id' });
 
@@ -20,3 +21,13 @@ LinkContacto.belongsTo(Ingeniero, { foreignKey: 'ingeniero_id' });
 
 Pensum.hasMany(LinkContacto, { foreignKey: 'pensum_id' });
 LinkContacto.belongsTo(Pensum, { foreignKey: 'pensum_id' });
+
+module.exports = {
+    Usuario,
+    Rol,
+    NoticiaEvento,
+    Categoria,
+    LinkContacto,
+    Pensum,
+    Ingeniero
+};
