@@ -85,3 +85,11 @@ Para deshacer todas las migraciones:
 ```bash
 npx sequelize-cli db:migrate:undo:all
 ```
+
+### Llenar la base de datos con datos falsos
+
+Después de ejecutar las migraciones, puedes poblar la base de datos con datos de prueba ejecutando el siguiente comando:
+
+```bash
+node test/createFakeData.js
+```
