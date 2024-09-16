@@ -23,12 +23,17 @@ NoticiaEvento.init({
     },
     categoria_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'Categoria',
+            key: 'id'
+        }
     }
 }, {
     sequelize,
     modelName: 'NoticiaEvento',
-    timestamps: true
+    timestamps: true,
+    freezeTableName: true,
 });
 
 module.exports = NoticiaEvento;

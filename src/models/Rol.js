@@ -19,7 +19,8 @@ Rol.init({
 }, {
     sequelize,
     modelName: 'Rol',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = Rol;
