@@ -23,12 +23,43 @@ LinkContacto.init({
     },
     noticia_evento_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'NoticiaEventos',
+            key: 'id'
+        }
+    },
+    ingeniero_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'Ingeniero',
+            key: 'id'
+        }
+    },
+    pensum_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'Pensum',
+            key: 'id'
+        }
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
     }
 }, {
     sequelize,
     modelName: 'LinkContacto',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = LinkContacto;

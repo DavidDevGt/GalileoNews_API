@@ -20,7 +20,8 @@ Ingeniero.init({
 }, {
     sequelize,
     modelName: 'Ingeniero',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = Ingeniero;
