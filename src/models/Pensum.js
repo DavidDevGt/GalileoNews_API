@@ -23,7 +23,8 @@ Pensum.init({
 }, {
     sequelize,
     modelName: 'Pensum',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = Pensum;

@@ -16,7 +16,8 @@ Categoria.init({
 }, {
     sequelize,
     modelName: 'Categoria',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = Categoria;

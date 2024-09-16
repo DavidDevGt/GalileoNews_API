@@ -1,3 +1,11 @@
+/**
+ * 
+ * Este archivo autogenerado por Sequelize, se 
+ * encarga de leer todos los archivos de modelos 
+ * en la carpeta src/models y los asocia con la base de datos.
+ * 
+ */
+
 'use strict';
 
 const fs = require('fs');
@@ -8,6 +16,7 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
+const modelsDirectory = path.resolve(__dirname, '../src/models');
 
 let sequelize;
 if (config.use_env_variable) {
@@ -17,17 +26,16 @@ if (config.use_env_variable) {
 }
 
 fs
-  .readdirSync(__dirname)
+  .readdirSync(modelsDirectory)
   .filter(file => {
     return (
       file.indexOf('.') !== 0 &&
-      file !== basename &&
       file.slice(-3) === '.js' &&
       file.indexOf('.test.js') === -1
     );
   })
   .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    const model = require(path.join(modelsDirectory, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
 
