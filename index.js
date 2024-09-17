@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -38,3 +39,6 @@ app.use('/api/pensums', pensumRoutes);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+=======
+console.log('push de prueba')
+>>>>>>> 8657b4937ffa18048305a1d8b7bbed327db78038
