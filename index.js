@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Galileo News API v0.1');
+    res.send('Prueba de commit desde rama Edu, GALILEO News');
 });
 
 app.use('/api/roles', rolRoutes);
