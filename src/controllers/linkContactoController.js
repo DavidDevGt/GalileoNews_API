@@ -70,7 +70,7 @@ const deleteLinkContacto = async (req, res) => {
         const deleted = await LinkContacto.destroy({ where: { id } });
 
         if (deleted) {
-            res.status(204).json();
+            res.json({message: "LinkContacto eliminado"});
         } else {
             res.status(404).json({ error: "LinkContacto no encontrado" });
         }
