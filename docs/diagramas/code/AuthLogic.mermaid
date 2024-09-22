@@ -1,0 +1,17 @@
+flowchart TD
+
+    %% --- Authentication in Protected Routes ---
+    subgraph Authentication
+        authA[Cliente envía solicitud con token en el encabezado Authorization]
+        authB[Middleware extrae y verifica el token]
+        authC{¿Token válido?}
+        authD[Responder con error]
+        authE[Adjuntar info del usuario a req.user]
+        authF[Pasa el control al siguiente middleware o controlador]
+
+        authA --> authB
+        authB --> authC
+        authC -->|No| authD
+        authC -->|Sí| authE
+        authE --> authF
+    end
