@@ -34,7 +34,7 @@ const router = express.Router();
  * /api/categorias:
  *   get:
  *     summary: Retrieve a list of categories
- *     tags: [Roles]
+ *     tags: [Categorias]
  *     responses:
  *       200:
  *         description: List of categories
