@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-
 const { connectDB } = require("./config/db");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 // Routes
 const rolRoutes = require("./src/routes/rolRoutes");
@@ -23,8 +24,11 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Serve Swagger docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.get("/", (req, res) => {
-  res.send("Galileo News API v0.1");
+    res.send("Galileo News API v0.1");
 });
 
 app.use("/api/auth", authRoutes);
@@ -38,4 +42,5 @@ app.use("/api/pensums", pensumRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
