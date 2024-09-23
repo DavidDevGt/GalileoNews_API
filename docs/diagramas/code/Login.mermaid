@@ -1,0 +1,19 @@
+flowchart TD
+
+    %% --- Login Process ---
+    subgraph Login
+        logA[Cliente envía credenciales de inicio de sesión]
+        logB[Servidor busca al usuario por email]
+        logC[Verificar contraseña]
+        logD{¿Contraseña válida?}
+        logE[Responder con error]
+        logF[Generar token JWT]
+        logG[Responder al cliente con el token]
+
+        logA --> logB
+        logB --> logC
+        logC --> logD
+        logD -->|No| logE
+        logD -->|Sí| logF
+        logF --> logG
+    end

@@ -1,0 +1,16 @@
+flowchart TD
+    %% --- Register User Process ---
+    subgraph Register
+        regA[Cliente envía datos de registro]
+        regB{¿Usuario existe?}
+        regC[Responder con error]
+        regD[Hashear contraseña y crear usuario]
+        regE[Generar token JWT]
+        regF[Responder al cliente con el token]
+
+        regA --> regB
+        regB -->|Sí| regC
+        regB -->|No| regD
+        regD --> regE
+        regE --> regF
+    end
