@@ -11,29 +11,63 @@ const { hashPassword, comparePassword } = require("../utils/encrypt");
  */
 exports.register = async (req, res) => {
   try {
-    const { nombre, email, password } = req.body;
+    console.log("Iniciando registro de usuario");
+    const { username, email, password } = req.body;
 
-    const existingUser = await Usuario.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ message: "El usuario ya existe" });
+    console.log("Datos recibidos:", { username, email, password: "***" });
+
+    try {
+      const existingUser = await Usuario.findOne({ where: { email } });
+      console.log("Búsqueda de usuario existente completada");
+
+      if (existingUser) {
+        console.log("Usuario ya existe");
+        return res.status(400).json({ message: "El usuario ya existe" });
+      }
+    } catch (dbError) {
+      console.error("Error al buscar usuario existente:", dbError);
+      throw new Error("Error en la base de datos al buscar usuario");
     }
 
-    const hashedPassword = await hashPassword(password);
+    let hashedPassword;
+    try {
+      hashedPassword = await hashPassword(password);
+      console.log("Contraseña hasheada correctamente");
+    } catch (hashError) {
+      console.error("Error al hashear la contraseña:", hashError);
+      throw new Error("Error al procesar la contraseña");
+    }
 
-    const newUser = await Usuario.create({
-      nombre,
-      email,
-      password: hashedPassword,
-      rolId: 2,
-    });
+    let newUser;
+    try {
+      newUser = await Usuario.create({
+        username,
+        email,
+        password: hashedPassword,
+        rol_id: 2,
+      });
+      console.log("Nuevo usuario creado:", newUser.id);
+    } catch (createError) {
+      console.error("Error al crear nuevo usuario:", createError);
+      throw new Error("Error al crear el usuario en la base de datos");
+    }
 
-    const token = AuthService.generateToken({
-      id: newUser.id,
-      email: newUser.email,
-    });
+    let token;
+    try {
+      token = AuthService.generateToken({
+        id: newUser.id,
+        email: newUser.email,
+      });
+      console.log("Token generado correctamente");
+    } catch (tokenError) {
+      console.error("Error al generar el token:", tokenError);
+      throw new Error("Error al generar el token de autenticación");
+    }
 
+    console.log("Registro completado con éxito");
     res.status(201).json({ message: "Usuario registrado", token });
   } catch (error) {
+    console.error("Error general en el registro:", error);
     res.status(500).json({
       message: "Error al registrar el usuario, consulte a Soporte",
       error: error.message,

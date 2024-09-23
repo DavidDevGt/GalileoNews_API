@@ -1,5 +1,11 @@
-const express = require('express');
-const { getUsers, createUser, getUserById, updateUser, deleteUser } = require('../controllers/usuarioController');
+const express = require("express");
+const {
+  getUsers,
+  createUser,
+  getUserById,
+  updateUser,
+  deleteUser,
+} = require("../controllers/usuarioController");
 
 const router = express.Router();
 
@@ -40,7 +46,6 @@ const router = express.Router();
  *   description: API endpoints for managing users
  */
 
-
 /**
  * @swagger
  * /api/usuarios:
@@ -59,31 +64,7 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get('/', getUsers);
-
-/**
- * @swagger
- * /api/usuarios:
- *   post:
- *     summary: Create a new user
- *     tags: [Usuarios]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       201:
- *         description: The created user
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       500:
- *         description: Server error
- */
-router.post('/', createUser);
+router.get("/", getUsers);
 
 /**
  * @swagger
@@ -110,7 +91,7 @@ router.post('/', createUser);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getUserById);
+router.get("/:id", getUserById);
 
 /**
  * @swagger
@@ -143,7 +124,7 @@ router.get('/:id', getUserById);
  *       500:
  *         description: Server error
  */
-router.put('/:id', updateUser);
+router.put("/:id", updateUser);
 
 /**
  * @swagger
@@ -166,6 +147,6 @@ router.put('/:id', updateUser);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteUser);
+router.delete("/:id", deleteUser);
 
 module.exports = router;
