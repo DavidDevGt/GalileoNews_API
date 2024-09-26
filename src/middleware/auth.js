@@ -1,4 +1,4 @@
-const authService = require("../services/authService");
+const AuthService = require("../services/AuthService");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -8,7 +8,7 @@ const authMiddleware = async (req, res, next) => {
   }
 
   try {
-    const decoded = authService.verifyToken(token);
+    const decoded = AuthService.verifyToken(token);
     req.user = decoded;
     next();
   } catch (error) {

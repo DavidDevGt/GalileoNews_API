@@ -28,10 +28,10 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
-    res.send("Galileo News API v0.1");
+  res.send("Galileo News API v0.1");
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/api/roles", rolRoutes);
 app.use("/api/usuarios", userRoutes);
 app.use("/api/categorias", categoriaRoutes);
