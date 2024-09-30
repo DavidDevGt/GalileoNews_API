@@ -27,11 +27,37 @@ const { register, login } = require("../controllers/authController");
  *                 type: string
  *               rol_id:
  *                 type: integer
+ *     parameters:
+ *       - in: header
+ *         name: Content-Type
+ *         schema:
+ *           type: string
+ *           example: application/json
+ *         required: true
+ *         description: Content type must be application/json
  *     responses:
  *       200:
  *         description: Usuario registrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 token:
+ *                   type: string
  *       400:
  *         description: Datos de entrada inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: string
  */
 router.post("/register", register);
 
@@ -55,6 +81,14 @@ router.post("/register", register);
  *                 type: string
  *               password:
  *                 type: string
+ *     parameters:
+ *       - in: header
+ *         name: Content-Type
+ *         schema:
+ *           type: string
+ *           example: application/json
+ *         required: true
+ *         description: Content type must be application/json
  *     responses:
  *       200:
  *         description: Inicio de sesión exitoso
@@ -63,10 +97,20 @@ router.post("/register", register);
  *             schema:
  *               type: object
  *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Bienvenido username"
  *                 token:
  *                   type: string
  *       401:
  *         description: Credenciales inválidas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 router.post("/login", login);
 

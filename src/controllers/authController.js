@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
 
     const token = AuthService.generateToken({ id: user.id, email: user.email });
 
-    res.json({ message: "Bienvenido " + user.nombre, token });
+    res.json({ message: "Bienvenido " + user.username, token });
   } catch (error) {
     res
       .status(500)
