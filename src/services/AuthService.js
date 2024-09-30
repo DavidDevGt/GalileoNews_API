@@ -17,3 +17,4 @@ const AuthService = {
     return jwt.verify(token, this.secretKey);
   },
 };
+module.exports = AuthService;
