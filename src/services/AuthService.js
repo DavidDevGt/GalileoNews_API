@@ -18,6 +18,9 @@ const AuthService = {
         "SECRET_KEY no está definida en las variables de entorno",
       );
     }
+    if (!this.algorithm) {
+      throw new Error("ALGORITHM no está definida en las variables de entorno");
+    }
     return jwt.sign(payload, this.secretKey, {
       expiresIn: this.expiresIn,
       algorithm: this.algorithm,
@@ -25,10 +28,8 @@ const AuthService = {
   },
 
   verifyToken: function (token) {
-    if (!this.secretKey) {
-      throw new Error(
-        "SECRET_KEY no está definida en las variables de entorno",
-      );
+    if (!token) {
+      throw new Error("No se proporcionó un token de autenticación");
     }
     return jwt.verify(token, this.secretKey);
   },

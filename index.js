@@ -5,6 +5,9 @@ const { connectDB } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
+// Middleware
+const authMiddleware = require("./src/middleware/authMiddleware");
+
 // Routes
 const rolRoutes = require("./src/routes/rolRoutes");
 const userRoutes = require("./src/routes/usuarioRoutes");
@@ -32,13 +35,13 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
-app.use("/api/roles", rolRoutes);
-app.use("/api/usuarios", userRoutes);
-app.use("/api/categorias", categoriaRoutes);
-app.use("/api/ingenieros", ingenieroRoutes);
-app.use("/api/link-contactos", linkContactoRoutes);
-app.use("/api/noticias-eventos", noticiaEventoRoutes);
-app.use("/api/pensums", pensumRoutes);
+app.use("/api/roles", authMiddleware, rolRoutes);
+app.use("/api/usuarios", authMiddleware, userRoutes);
+app.use("/api/categorias", authMiddleware, categoriaRoutes);
+app.use("/api/ingenieros", authMiddleware, ingenieroRoutes);
+app.use("/api/link-contactos", authMiddleware, linkContactoRoutes);
+app.use("/api/noticias-eventos", authMiddleware, noticiaEventoRoutes);
+app.use("/api/pensums", authMiddleware, pensumRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
