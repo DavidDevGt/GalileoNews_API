@@ -24,7 +24,7 @@ module.exports = {
       },
       rol_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "Rol",
           key: "id",
