@@ -5,7 +5,6 @@ const { connectDB } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
-// Logs
 const logger = require("./logger");
 
 // Middleware
@@ -27,7 +26,16 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Configuración de CORS
+const corsOptions = {
+  origin: 'http://localhost:5173', // Permite solicitudes desde tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Permite enviar cookies si es necesario
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Logging middleware
@@ -40,21 +48,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve Swagger docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
   res.send("Galileo News API v0.1");
 });
 
+// Rutas públicas
 app.use("/auth", authRoutes);
-app.use("/api/roles", authMiddleware, rolRoutes);
-app.use("/api/usuarios", authMiddleware, userRoutes);
-app.use("/api/categorias", authMiddleware, categoriaRoutes);
-app.use("/api/ingenieros", authMiddleware, ingenieroRoutes);
-app.use("/api/link-contactos", authMiddleware, linkContactoRoutes);
-app.use("/api/noticias-eventos", authMiddleware, noticiaEventoRoutes);
-app.use("/api/pensums", authMiddleware, pensumRoutes);
+
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+  authMiddleware(req, res, next);
+});
+
+// Rutas protegidas
+app.use("/api/roles", rolRoutes);
+app.use("/api/usuarios", userRoutes);
+app.use("/api/categorias", categoriaRoutes);
+app.use("/api/ingenieros", ingenieroRoutes);
+app.use("/api/link-contactos", linkContactoRoutes);
+app.use("/api/noticias-eventos", noticiaEventoRoutes);
+app.use("/api/pensums", pensumRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
