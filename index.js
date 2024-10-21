@@ -5,6 +5,9 @@ const { connectDB } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
+// Logs
+const logger = require("./logger");
+
 // Middleware
 const authMiddleware = require("./src/middleware/authMiddleware");
 
@@ -27,6 +30,16 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const responseTime = Date.now() - start;
+    logger.logAPICall(req, res, responseTime);
+  });
+  next();
+});
+
 // Serve Swagger docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -43,7 +56,22 @@ app.use("/api/link-contactos", authMiddleware, linkContactoRoutes);
 app.use("/api/noticias-eventos", authMiddleware, noticiaEventoRoutes);
 app.use("/api/pensums", authMiddleware, pensumRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.logError(err, req);
+  res.status(500).json({ message: "Internal Server Error" });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+  logger.info(`Server running on port ${PORT}`);
+  logger.info(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+});
+
+process.on("uncaughtException", (error) => {
+  logger.error("Uncaught Exception:", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  logger.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
