@@ -34,7 +34,7 @@ const readableFormat = format.printf(
 );
 
 const fileRotateTransport = new winston.transports.DailyRotateFile({
-  filename: path.join(process.env.LOG_DIR || "var/logs", "%DATE%-app.log"),
+  filename: path.join(process.env.LOG_DIR || "logs", "%DATE%-app.log"),
   datePattern: "YYYY-MM-DD",
   zippedArchive: process.env.LOG_COMPRESS === "true",
   maxSize: process.env.LOG_MAX_SIZE || "10m",
@@ -43,7 +43,7 @@ const fileRotateTransport = new winston.transports.DailyRotateFile({
 });
 
 const errorFileRotateTransport = new winston.transports.DailyRotateFile({
-  filename: path.join(process.env.LOG_DIR || "var/logs", "%DATE%-error.log"),
+  filename: path.join(process.env.LOG_DIR || "logs", "%DATE%-error.log"),
   datePattern: "YYYY-MM-DD",
   zippedArchive: process.env.LOG_COMPRESS === "true",
   maxSize: process.env.LOG_MAX_SIZE || "10m",
