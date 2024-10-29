@@ -5,6 +5,11 @@ const { connectDB } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
+const logger = require("./logger");
+
+// Middleware
+const authMiddleware = require("./src/middleware/authMiddleware");
+
 // Routes
 const rolRoutes = require("./src/routes/rolRoutes");
 const userRoutes = require("./src/routes/usuarioRoutes");
@@ -21,17 +26,45 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Configuración de CORS
+const corsOptions = {
+  origin: '*', // Permitir todos los orígenes (solo para desarrollo)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Serve Swagger docs
+// Logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const responseTime = Date.now() - start;
+    logger.logAPICall(req, res, responseTime);
+  });
+  next();
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
   res.send("Galileo News API v0.1");
 });
 
+// Rutas públicas
 app.use("/auth", authRoutes);
+
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+  authMiddleware(req, res, next);
+});
+
+// Rutas protegidas
 app.use("/api/roles", rolRoutes);
 app.use("/api/usuarios", userRoutes);
 app.use("/api/categorias", categoriaRoutes);
@@ -40,7 +73,22 @@ app.use("/api/link-contactos", linkContactoRoutes);
 app.use("/api/noticias-eventos", noticiaEventoRoutes);
 app.use("/api/pensums", pensumRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.logError(err, req);
+  res.status(500).json({ message: "Internal Server Error" });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+  logger.info(`Server running on port ${PORT}`);
+  logger.info(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+});
+
+process.on("uncaughtException", (error) => {
+  logger.error("Uncaught Exception:", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  logger.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
