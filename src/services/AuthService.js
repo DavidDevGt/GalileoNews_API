@@ -1,25 +1,16 @@
 const dotenv = require("dotenv");
+dotenv.config(); // Carga las variables de entorno
+
 const jwt = require("jsonwebtoken");
 
-dotenv.config();
-
 const AuthService = {
-  get secretKey() {
-    return process.env.SECRET_JWT;
-  },
-  expiresIn: "1h",
-  get algorithm() {
-    return process.env.ALGORITHM;
-  },
+  secretKey: process.env.SECRET_KEY || "defaultSecret", // Añade un valor por defecto en caso de que no se cargue
+  expiresIn: process.env.JWT_EXPIRATION || "1h", // Usa la variable de entorno JWT_EXPIRATION o un valor por defecto
+  algorithm: process.env.JWT_ALGORITHM || "HS256", // Usa la variable de entorno JWT_ALGORITHM o un valor por defecto
 
   generateToken: function (payload) {
     if (!this.secretKey) {
-      throw new Error(
-        "SECRET_KEY no está definida en las variables de entorno",
-      );
-    }
-    if (!this.algorithm) {
-      throw new Error("ALGORITHM no está definida en las variables de entorno");
+      throw new Error("SECRET_KEY no está definida en las variables de entorno");
     }
     return jwt.sign(payload, this.secretKey, {
       expiresIn: this.expiresIn,
@@ -28,9 +19,6 @@ const AuthService = {
   },
 
   verifyToken: function (token) {
-    if (!token) {
-      throw new Error("No se proporcionó un token de autenticación");
-    }
     return jwt.verify(token, this.secretKey);
   },
 };
