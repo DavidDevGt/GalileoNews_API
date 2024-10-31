@@ -1,7 +1,7 @@
 const Usuario = require("../models/Usuario");
 const AuthService = require("../services/AuthService");
 const { hashPassword, comparePassword } = require("../utils/encrypt");
-const passport = require("passport");
+const passport = require("../../config/passport");
 
 /**
  * Registra un nuevo usuario en el sistema.
@@ -111,18 +111,18 @@ exports.googleLogin = passport.authenticate('google', {
   scope: ['profile', 'email']
 })
 
-exports.googleCallback = passport.authenticate('google', {
-  failureRedirect: '/auth/failure',
-  successRedirect: '/auth/success'
-});
 
-exports.googleSuccess = (req, res) => {
-  if (req.user) {
-    const token = authService.generateToken({ id: req.user.id, email: req.user.email });
-    res.json({ message: `Bienvenido ${req.user.username}`, token });
-  } else {
-    res.status(401).json({ message: 'Usuario no autenticado' });
-  }
+exports.googleCallback = (req, res, next) => {
+  passport.authenticate("google", { session: false }, (err, user) => {
+    if (err || !user) {
+      return res.redirect("/auth/failure");
+    }
+    
+    const token = AuthService.generateToken({ id: user.id, email: user.email });
+    
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:8100";
+    res.redirect(`${frontendUrl}/auth/success?token=${token}`);
+  })(req, res, next);
 };
 
 // Ruta de fallo para Google

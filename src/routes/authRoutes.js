@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { register, login } = require("../controllers/authController");
+const { register, login, googleLogin, googleCallback, googleFailure } = require("../controllers/authController");
 
 /**
  * @swagger
@@ -113,5 +113,20 @@ router.post("/register", register);
  *                   type: string
  */
 router.post("/login", login);
+
+/**
+ * Ruta para iniciar el flujo de autenticación con Google.
+ */
+router.get("/google", googleLogin);
+
+/**
+ * Ruta de callback para Google (usada después del login en Google).
+ */
+router.get("/google/callback", googleCallback);
+
+/**
+ * Ruta en caso de fallo de autenticación con Google.
+ */
+router.get("/failure", googleFailure);
 
 module.exports = router;

@@ -4,10 +4,7 @@ const dotenv = require("dotenv");
 const { connectDB } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
-
 const logger = require("./logger");
-
-// Middleware
 const authMiddleware = require("./src/middleware/authMiddleware");
 const passport = require("passport");
 require("./config/passport");
@@ -28,29 +25,21 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Config CORS
+// Configuración de CORS
 const corsOptions = {
-  origin: '*', // Permitir todos los orígenes (solo para desarrollo)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  origin: process.env.FRONTEND_URL,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Config Passport
-const session = require('express-session');
-app.use(session({ 
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true 
-}));
+// Passport
 app.use(passport.initialize());
-app.use(passport.session());
 
-// Logging middleware
+// Middleware de registro de llamadas de API
 app.use((req, res, next) => {
   const start = Date.now();
   res.on("finish", () => {
@@ -70,7 +59,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 
 app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return next();
   }
   authMiddleware(req, res, next);
@@ -85,7 +74,7 @@ app.use("/api/link-contactos", linkContactoRoutes);
 app.use("/api/noticias-eventos", noticiaEventoRoutes);
 app.use("/api/pensums", pensumRoutes);
 
-// Error handling middleware
+// Middleware de manejo de errores
 app.use((err, req, res, next) => {
   logger.logError(err, req);
   res.status(500).json({ message: "Internal Server Error" });
