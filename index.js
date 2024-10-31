@@ -9,6 +9,8 @@ const logger = require("./logger");
 
 // Middleware
 const authMiddleware = require("./src/middleware/authMiddleware");
+const passport = require("passport");
+require("./config/passport");
 
 // Routes
 const rolRoutes = require("./src/routes/rolRoutes");
@@ -26,7 +28,7 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configuración de CORS
+// Config CORS
 const corsOptions = {
   origin: '*', // Permitir todos los orígenes (solo para desarrollo)
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -37,6 +39,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Config Passport
+const session = require('express-session');
+app.use(session({ 
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true 
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Logging middleware
 app.use((req, res, next) => {

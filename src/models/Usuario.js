@@ -21,7 +21,7 @@ Usuario.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Esto es por los usuarios que se loguean con Google
     },
     rol_id: {
       type: DataTypes.INTEGER,
@@ -32,6 +32,11 @@ Usuario.init(
       },
       onUpdate: "CASCADE",
       onDelete: "SET NULL",
+    },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
     },
   },
   {

@@ -1,6 +1,7 @@
 const Usuario = require("../models/Usuario");
 const AuthService = require("../services/AuthService");
 const { hashPassword, comparePassword } = require("../utils/encrypt");
+const passport = require("passport");
 
 /**
  * Registra un nuevo usuario en el sistema.
@@ -104,4 +105,27 @@ exports.login = async (req, res) => {
       .status(500)
       .json({ message: "Error al iniciar sesion", error: error.message });
   }
+};
+
+exports.googleLogin = passport.authenticate('google', {
+  scope: ['profile', 'email']
+})
+
+exports.googleCallback = passport.authenticate('google', {
+  failureRedirect: '/auth/failure',
+  successRedirect: '/auth/success'
+});
+
+exports.googleSuccess = (req, res) => {
+  if (req.user) {
+    const token = authService.generateToken({ id: req.user.id, email: req.user.email });
+    res.json({ message: `Bienvenido ${req.user.username}`, token });
+  } else {
+    res.status(401).json({ message: 'Usuario no autenticado' });
+  }
+};
+
+// Ruta de fallo para Google
+exports.googleFailure = (req, res) => {
+  res.status(401).json({ message: 'Falló el inicio de sesión con Google' });
 };

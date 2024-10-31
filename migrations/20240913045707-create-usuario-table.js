@@ -32,6 +32,11 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      googleId: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique: true,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
