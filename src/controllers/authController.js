@@ -89,12 +89,12 @@ exports.login = async (req, res) => {
 
     const user = await Usuario.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({ message: "Credenciales inválidas" });
+      return res.status(401).json({ message: "Correo electrónico no registrado" });
     }
 
     const isPasswordValid = await comparePassword(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Credenciales inválidas" });
+      return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
     const token = AuthService.generateToken({ id: user.id, email: user.email });
