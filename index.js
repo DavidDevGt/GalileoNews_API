@@ -63,7 +63,9 @@ app.use((req, res, next) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
-  res.send("Galileo News API v0.1");
+  res.json({
+    message: "Galileo News API v0.1",
+  });
 });
 
 // Rutas públicas
